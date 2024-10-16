@@ -11,6 +11,7 @@ player_emoji_list = []
 simon_list=[]
 simon_emoji_list = []
 player_word="" #input
+time_limit = 1
 
 
 
@@ -24,18 +25,18 @@ def menu():
     print(f"**********************        SIMON SAYS       ********************** ")
     print(f"**                                                                 ** ")
     print(f"*********************************************************************\n\n")
+    print("                          This is a memory game")
+    print("             Observe what Simon says and repeat the sequence\n")
+
+
+    input('                      PRESS ENTER TO PLAY!!!!!')
+    print('                     ---------------------------                      \n\n\n   ')
+
+
 menu()
-
-print("     The word must contain 5 letters and it is related with food\n")
-
-
-input('                       PRESS ENTER TO PLAY!!!!!')
-print('                     ---------------------------                      \n\n\n   ')
-
 in_game=True
-
 while  in_game==True:     
-    print("SIMON SAYS!")#hay que modificar esta línea
+    print("SIMON SAYS!\n")#hay que modificar esta línea
     time.sleep(2)  # wait 2 seconds
     random_word= random.choice(color_list)
     #append colors in simon_emoji_list
@@ -50,13 +51,21 @@ while  in_game==True:
     else:
         simon_emoji_list.append(emoji_list[4])
 
-    print(''.join(simon_list)+random_word)
+    print(''.join(simon_list)+random_word, "\n\n")
     time.sleep(0.75)
     clean_screen()
    
     input("Press Enter to start your input...")
+    clean_screen()
+    start_time = time.time()
+    while True:
+        current_time = time.time()
+        time_difference =current_time - start_time
+        if time_difference > time_limit:
+            break
+        player_word = input("Insert the sequence: ").upper().strip()
 
-    player_word = input("Insert the sequence: ").upper().strip()
+    clean_screen()
     simon_list.append(random_word)
     simon_word=''.join(simon_list)
     player_list.append(player_word[len(player_word)-1:])
@@ -70,9 +79,9 @@ while  in_game==True:
 
 
 if len(player_list) == 5:
-    print("\n\nTHIS IS THE CORRECT SEQUENCE:\n")
-    print(''.join(simon_emoji_list))
-    print("\nTHIS WAS YOUR SEQUENCE:\n")
+    print("\n\n                  THIS IS THE CORRECT SEQUENCE:\n")
+    print("                          ",''.join(simon_emoji_list))
+    print("\n                      THIS WAS YOUR SEQUENCE:\n")
     if not player_word:
         player_emoji_list.append(emoji_list[5])
     else: 
@@ -92,13 +101,13 @@ if len(player_list) == 5:
             else: 
                 player_emoji_list.append(emoji_list[5])
 
-    print(''.join(player_emoji_list),"\n")
-    print("\nYOU WIN\n")
+    print("                          ",''.join(player_emoji_list),"\n")
+    print("\n                               YOU WIN\n")
 else:
     
-    print("\n\nTHIS IS THE CORRECT SEQUENCE:\n")
-    print(''.join(simon_emoji_list))
-    print("\nTHIS WAS YOUR SEQUENCE:\n")
+    print("\n\n                   THIS IS THE CORRECT SEQUENCE:\n")
+    print("                          ",''.join(simon_emoji_list))
+    print("\n                       THIS WAS YOUR SEQUENCE:\n")
     if not player_word:
         player_emoji_list.append(emoji_list[5])
     else: 
@@ -118,7 +127,7 @@ else:
             else: 
                 player_emoji_list.append(emoji_list[5])
 
-        print("\nYOU FAIL\n")
+        print("\n                             YOU FAIL\n")
 
-    print(''.join(player_emoji_list),"\n")
+    print("                          ",''.join(player_emoji_list),"\n")
             
