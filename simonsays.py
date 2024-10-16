@@ -36,7 +36,8 @@ while  in_game==True:     #simon_list==player_list or
     simon_list.append(random_word)
     variable_hijaputa=str(simon_list)
     player_list.append(player_word)
-    if variable_hijaputa!=player_word:
+    hija_buena=str(player_list)
+    if variable_hijaputa!=hija_buena:
         in_game=False
     
 
