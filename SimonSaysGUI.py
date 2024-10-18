@@ -1,4 +1,4 @@
-mport tkinter as tk
+import tkinter as tk
 from tkinter import messagebox, ttk
 import random
 import math
@@ -22,6 +22,7 @@ class SimonDice:
             "Medium": 1.0,
             "Hard": 0.5
         }
+        self.current_clicks = 0  # Nuevo: contador para clicks actuales
 
         self.create_difficulty_selector()
         self.create_buttons()
@@ -91,14 +92,22 @@ class SimonDice:
         self.high_score_label = tk.Label(score_frame, text="High Score: 0", font=("Arial", 18))
         self.high_score_label.pack(side=tk.LEFT, padx=10)
 
+        # Nuevo: Label para mostrar los clicks actuales
+        self.clicks_label = tk.Label(score_frame, text="Current Clicks: 0", font=("Arial", 18))
+        self.clicks_label.pack(side=tk.LEFT, padx=10)
+
     def start_game(self):
         self.sequence = []
         self.player_sequence = []
+        self.current_clicks = 0  # Reiniciar el contador de clicks
+        self.update_clicks_label()  # Actualizar la etiqueta de clicks
         self.continue_game()
         self.start_button.config(state=tk.DISABLED)
 
     def continue_game(self):
         self.continue_button.config(state=tk.DISABLED)
+        self.current_clicks = 0  # Reiniciar el contador de clicks para el nuevo turno
+        self.update_clicks_label()  # Actualizar la etiqueta de clicks
         self.add_to_sequence()
 
     def add_to_sequence(self):
@@ -132,6 +141,9 @@ class SimonDice:
         self.master.after(200, lambda: self.canvas.itemconfig(button, fill=self.colors[index]))
 
         self.player_sequence.append(color)
+        self.current_clicks += 1  # Incrementar el contador de clicks
+        self.update_clicks_label()  # Actualizar la etiqueta de clicks
+
         if self.player_sequence[-1] != self.sequence[len(self.player_sequence) - 1]:
             self.game_over()
         elif len(self.player_sequence) == len(self.sequence):
@@ -143,11 +155,16 @@ class SimonDice:
             self.player_sequence = []
             self.continue_button.config(state=tk.NORMAL)
 
+    def update_clicks_label(self):
+        self.clicks_label.config(text=f"Current Clicks: {self.current_clicks}")
+
     def game_over(self):
         messagebox.showinfo("Game Over", f"Game Over! Your final score is: {len(self.sequence) - 1}")
         self.start_button.config(state=tk.NORMAL)
         self.continue_button.config(state=tk.DISABLED)
         self.score_label.config(text="Current Score: 0")
+        self.current_clicks = 0  # Reiniciar el contador de clicks
+        self.update_clicks_label()  # Actualizar la etiqueta de clicks
 
 if __name__ == "__main__":
     root = tk.Tk()
